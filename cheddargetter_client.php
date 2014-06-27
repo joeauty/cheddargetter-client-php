@@ -1,5 +1,13 @@
 <?php
 
+require('Client/Exception.php');
+require('Client/AdapterInterface.php');
+require('Client/CurlAdapter.php');
+require('Response.php');
+require('Response/Exception.php');
+require('Http/AdapterInterface.php');
+require('Http/NativeAdapter.php');
+
 /**
  * CheddarGetter
  * @category CheddarGetter
@@ -73,7 +81,17 @@ class CheddarGetter_Client {
 	 * @param string $productId
 	 * @param CheddarGetter_Client_AdapterInterface $adapter
 	 */
-	public function __construct($url, $username, $password, $productCode = null, $productId = null, CheddarGetter_Client_AdapterInterface $adapter = null) {
+	
+	public function __construct() {
+		$this->CI =& get_instance();
+		$this->init($this->CI->config->item('CheddarGetterHost'), 
+					$this->CI->config->item('CheddarGetterEmail'),
+					$this->CI->config->item('CheddarGetterPassword'),
+					$this->CI->config->item('CheddarGetterProduct'));
+								
+	}
+	
+	public function init($url, $username, $password, $productCode = null, $productId = null, CheddarGetter_Client_AdapterInterface $adapter = null) {
 
 		$this->setUrl($url);
 		$this->setUsername($username);
